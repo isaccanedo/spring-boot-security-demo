@@ -1,9 +1,9 @@
 {
-  "name": "Spring Boot",
-  "image": "mcr.microsoft.com/devcontainers/java:21",
   "features": {
-    "ghcr.io/devcontainers/features/maven:2": {}
-  },
-  "forwardPorts": [8080],
-  "postCreateCommand": "chmod +x mvnw"
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "installMaven": "true",
+      "installGradle": "false"
+    }
+  }
 }
