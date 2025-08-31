@@ -1,0 +1,9 @@
+{
+  "name": "Spring Boot",
+  "image": "mcr.microsoft.com/devcontainers/java:21",
+  "features": {
+    "ghcr.io/devcontainers/features/maven:2": {}
+  },
+  "forwardPorts": [8080],
+  "postCreateCommand": "chmod +x mvnw"
+}
