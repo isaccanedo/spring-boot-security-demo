@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .field-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        input.error {
+            border-color: #dc3545;
+        }
+
+        .info-box {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border: 1px solid #bee5eb;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Login do Sistema</h2>
+
+    <!-- Mensagem de erro de autenticação -->
+    <div th:if="${param.error}" class="error-message">
+        <span>Usuário ou senha inválidos!</span>
+    </div>
+
+    <!-- Mensagem de logout -->
+    <div th:if="${param.logout}" class="success-message">
+        <span>Logout realizado com sucesso!</span>
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label for="username">Nome de usuário:</label>
+            <input type="text"
+                   id="username"
+                   name="username"
+                   required
+                   autofocus="autofocus"
+                   placeholder="Digite seu usuário" />
+            <div class="field-error" id="username-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Senha:</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   required
+                   placeholder="Digite sua senha" />
+            <div class="field-error" id="password-error"></div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" id="login-btn">Entrar</button>
+        </div>
+    </form>
+
+    <!-- Informações para desenvolvimento -->
+    <div class="info-box">
+        <strong>Credenciais padrão:</strong><br>
+        Usuário: <code>user</code><br>
+        Senha: Verifique no console da aplicação
+    </div>
+</div>
+
+<script>
+    // Validação JavaScript no frontend
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('login-btn');
+
+        // Função para validar campos
+        function validateField(input, errorElementId, message) {
+            const errorElement = document.getElementById(errorElementId);
+            if (input.value.trim() === '') {
+                input.classList.add('error');
+                errorElement.textContent = message;
+                return false;
+            } else {
+                input.classList.remove('error');
+                errorElement.textContent = '';
+                return true;
+            }
+        }
+
+        // Validação em tempo real
+        usernameInput.addEventListener('blur', function() {
+            validateField(this, 'username-error', 'Nome de usuário é obrigatório');
+        });
+
+        passwordInput.addEventListener('blur', function() {
+            validateField(this, 'password-error', 'Senha é obrigatória');
+        });
+
+        // Limpar erros quando o usuário começar a digitar
+        usernameInput.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                this.classList.remove('error');
+                document.getElementById('username-error').textContent = '';
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                this.classList.remove('error');
+                document.getElementById('password-error').textContent = '';
+            }
+        });
+
+        // Validação no envio do formulário
+        form.addEventListener('submit', function(e) {
+            const isUsernameValid = validateField(usernameInput, 'username-error', 'Nome de usuário é obrigatório');
+            const isPasswordValid = validateField(passwordInput, 'password-error', 'Senha é obrigatória');
+
+            if (!isUsernameValid || !isPasswordValid) {
+                e.preventDefault();
+                return false;
+            }
+
+            // Desabilitar botão para evitar duplo envio
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Entrando...';
+        });
+    });
+</script>
+</body>
+</html>
