@@ -40,8 +40,7 @@ Antes de começar, você precisa ter instalado em sua máquina:
 
 ### 1. Clone o repositório
 ```bash
-git clone <url-do-repositorio>
-cd demo
+git clone https://github.com/isaccanedo/spring-boot-security-demo.git
 ```
 
 ### 2. Execute o projeto
