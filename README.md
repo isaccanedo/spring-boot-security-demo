@@ -1,4 +1,4 @@
-# 🔐 Sistema de Autenticação Spring Boot
+## 🔐 Sistema de Autenticação Spring Boot
 
 Um projeto demonstrativo de sistema de autenticação usando Spring Boot, Spring Security e Thymeleaf com interface personalizada de login.
 
